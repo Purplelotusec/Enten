@@ -1,0 +1,41 @@
+name: EntenCI
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [ main ]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Run CI Integrity Analyzer
+        run: node src/analyzer.js
+
+      - name: Auto-fix and update lockfile
+        if: always()
+        run: |
+          if [ -f fix.patch ]; then
+            git config user.name "ci-integrity-bot"
+            git config user.email "ci@bot"
+            git apply fix.patch
+            git add .
+            git commit -m "Auto-fix: pin actions / update lockfile"
+            git push
+          fi
