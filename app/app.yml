@@ -1,5 +1,12 @@
 name: "EntenCI"
 
+url: "https://github.com/Purplelotusec/Enten"
+
+hook_attributes:
+  url: "https://dummy.entenci.local"
+
+redirect_url: "https://github.com/apps/entenci/installations/new"
+
 permissions:
   contents: write
   pull_requests: write
@@ -16,5 +23,6 @@ events:
 
 default_events:
   - pull_request
+
 default_permissions:
   contents: read
