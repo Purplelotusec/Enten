@@ -1,4 +1,5 @@
-name: EntenCI
+name: EntenCI Integrity
+
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -22,20 +23,19 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
 
-      - name: Run CI Integrity Analyzer
+      - name: Run EntenCI Analyzer
         run: node src/analyzer.js
 
       - name: Auto-fix and update lockfile
         if: always()
         run: |
           if [ -f fix.patch ]; then
-            git config user.name "ci-integrity-bot"
-            git config user.email "ci@bot"
+            git config user.name "EntenCI Bot"
+            git config user.email "entenci@bot"
             git apply fix.patch
             git add .
-            git commit -m "Auto-fix: pin actions / update lockfile"
+            git commit -m "EntenCI auto-fix: pin actions / update lockfile"
             git push
           fi
