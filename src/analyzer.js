@@ -6,7 +6,6 @@ import { loadLockfile, updateLockfile } from "./lockfile.js";
 async function run() {
   const workflows = fs.readdirSync(".github/workflows");
 
-  let violations = [];
   let patches = [];
   let lock = loadLockfile();
 
@@ -17,11 +16,11 @@ async function run() {
 
     const result = await generatePatches(path, parsed, lock);
 
-    violations.push(...result.violations);
     patches.push(...result.patches);
     lock = updateLockfile(lock, result.lockUpdates);
   }
 
+  // Save updated lockfile
   fs.writeFileSync(".github/ci-integrity.lock", JSON.stringify(lock, null, 2));
 
   if (patches.length > 0) {
