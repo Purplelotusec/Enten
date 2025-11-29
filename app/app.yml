@@ -1,0 +1,20 @@
+name: "EntenCI"
+
+permissions:
+  contents: write
+  pull_requests: write
+  checks: write
+  metadata: read
+
+events:
+  - pull_request
+  - push
+  - check_suite
+  - check_run
+  - installation
+  - installation_repositories
+
+default_events:
+  - pull_request
+default_permissions:
+  contents: read
