@@ -4,7 +4,13 @@ export function loadLockfile() {
   if (!fs.existsSync(".github/ci-integrity.lock")) {
     return { actions: {}, urls: {} };
   }
-  return JSON.parse(fs.readFileSync(".github/ci-integrity.lock", "utf8"));
+
+  try {
+    return JSON.parse(fs.readFileSync(".github/ci-integrity.lock", "utf8"));
+  } catch (err) {
+    console.error("Invalid lockfile JSON, resetting.");
+    return { actions: {}, urls: {} };
+  }
 }
 
 export function updateLockfile(lock, updates) {
